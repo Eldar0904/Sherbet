@@ -852,15 +852,6 @@ textarea {
   justify-content: space-between;
   margin-top: 4px;
 }
-.cart-note {
-  font-size: 7px;
-  color: #919687;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  margin: 13px 0 0;
-}
 .cart-items {
   padding: 8px 0 18px;
 }
@@ -994,23 +985,6 @@ footer > small {
 .order-row small {
   font-size: 10px;
   color: #9ba18f;
-}
-.order-row blockquote {
-  margin: 10px 0;
-  border-left: 2px solid var(--orange);
-  padding-left: 12px;
-  font-size: 12px;
-}
-.payment {
-  font-size: 9px;
-  background: #f8ede3;
-  color: #9d764b;
-  padding: 5px 9px;
-  border-radius: 3px;
-}
-.payment.paid {
-  background: #edf2e5;
-  color: #557347;
 }
 .stats {
   display: grid;
@@ -1604,15 +1578,6 @@ footer > small {
   .cart-empty {
     padding: 22px 0;
   }
-  .cart .checkbox {
-    font-size: 11px;
-  }
-  .cart .checkbox > span {
-    font-size: 11px;
-  }
-  .cart-note {
-    font-size: 8px;
-  }
   .kaspi {
     font-size: 12px;
     padding: 14px;
@@ -1699,9 +1664,6 @@ footer > small {
     gap: 10px;
     flex-wrap: wrap;
     font-size: 12px;
-  }
-  .payment {
-    font-size: 8px;
   }
   .order-row p {
     line-height: 1.8;
@@ -1832,10 +1794,6 @@ footer > small {
   .cart-item > button {
     width: 44px;
     height: 44px;
-  }
-  .cart-note {
-    font-size: 10px;
-    line-height: 1.6;
   }
   .button {
     min-height: 48px;

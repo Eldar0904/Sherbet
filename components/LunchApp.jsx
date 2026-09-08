@@ -75,8 +75,6 @@ export default function LunchApp() {
     [login, setLogin] = useState(false),
     [pin, setPin] = useState(""),
     [name, setName] = useState(""),
-    [note, setNote] = useState(""),
-    [paid, setPaid] = useState(false),
     [success, setSuccess] = useState(null),
     [editor, setEditor] = useState(null),
     [days, setDays] = useState([]),
@@ -178,16 +176,12 @@ export default function LunchApp() {
         );
       const result = await api("orders", "POST", {
         name,
-        note,
-        paid,
         requestId,
         items: items.map((i) => ({ id: i.id, qty: i.qty })),
       });
       localStorage.setItem("sherbet_name", name);
       setSuccess(result.id);
       setCart({});
-      setNote("");
-      setPaid(false);
       setRequestId(crypto.randomUUID());
     });
   }
@@ -513,16 +507,6 @@ export default function LunchApp() {
                         autoComplete="name"
                       />
                     </label>
-                    <label>
-                      Пожелания <span>необязательно</span>
-                      <textarea
-                        value={note}
-                        maxLength={300}
-                        onChange={(e) => setNote(e.target.value)}
-                        placeholder="Например, без лука"
-                        rows={2}
-                      />
-                    </label>
                     <div className="cart-total">
                       <span>Итого</span>
                       <strong>{money(total)}</strong>
@@ -540,14 +524,6 @@ export default function LunchApp() {
                       </span>
                       <ArrowUpRight size={19} />
                     </a>
-                    <label className="checkbox">
-                      <input
-                        type="checkbox"
-                        checked={paid}
-                        onChange={(e) => setPaid(e.target.checked)}
-                      />
-                      <span>Я уже оплатил(а) через Kaspi</span>
-                    </label>
                     <button
                       className="button checkout"
                       disabled={busy || !count || data?.demo}
@@ -561,10 +537,6 @@ export default function LunchApp() {
                         </>
                       )}
                     </button>
-                    <p className="cart-note">
-                      <LockKeyhole size={11} /> Отметка об оплате подтверждается
-                      вами
-                    </p>
                   </form>
                 )}
               </aside>
@@ -975,13 +947,9 @@ function OrderList({ orders }) {
           <article className="order-row" key={o.id}>
             <div className="order-row-top">
               <strong>{o.customer}</strong>
-              <span className={"payment " + (o.paid ? "paid" : "")}>
-                {o.paid ? "Оплата отмечена" : "Не оплачено"}
-              </span>
               <b>{money(o.total)}</b>
             </div>
             <p>{o.items.map((i) => `${i.title} × ${i.qty}`).join(" · ")}</p>
-            {o.note && <blockquote>{o.note}</blockquote>}
             <small>
               Заказ №{o.id} ·{" "}
               {new Date(o.created_at).toLocaleTimeString("ru-RU", {

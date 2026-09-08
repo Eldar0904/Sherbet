@@ -15,7 +15,7 @@ Create a new Vercel project connected to the Sherbet repository. The old lunch a
 3. Set `DATABASE_URL`, `ADMIN_PIN`, `SESSION_SECRET`, and `CRON_SECRET` in Production before deployment. Use separate Preview database credentials if enabling database-backed previews.
 4. Deploy. The first database request creates the dedicated `sherbet` schema and its tables. It never reads or alters `public` application tables. The connection role must have schema/table creation privileges (Supabase's database owner supports this). RLS is enabled; the server's database-owner connection performs queries directly. Do not expose this connection string to browsers.
 5. Sign in with the configured admin password, add dishes and prices, and mark today's dishes active. Saving a dish publishes today's menu. Orders close automatically at 13:00 Kazakhstan time and open again only after the next menu update. The real database starts with an empty menu; sample dishes are only shown in the explicitly marked preview when DATABASE_URL is absent.
-6. Place a test order and check it in the administrator view. Payment status is a customer's declaration, not an automatic Kaspi payment confirmation.
+6. Place a test order and check it in the administrator view. Kaspi payment is opened through the payment link; payment confirmation is handled outside the app.
 
 ## Local development
 
