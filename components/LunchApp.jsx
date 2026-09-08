@@ -271,7 +271,6 @@ export default function LunchApp() {
           <>
             <section className="hero">
               <div className="hero-copy">
-                <span className="eyebrow">ХОРОШАЯ ЕДА. ХОРОШИЙ ДЕНЬ.</span>
                 <h1>
                   Большой день.
                   <br />
@@ -754,7 +753,6 @@ export default function LunchApp() {
         <div className="brand">
           Sherbet<span className="brand-dot">.</span>
         </div>
-        <span>Хорошая еда объединяет.</span>
         <small>С заботой о вашей команде · {now.getFullYear()}</small>
       </footer>
       {login && (
