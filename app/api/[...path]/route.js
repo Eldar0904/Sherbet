@@ -150,7 +150,11 @@ async function handle(req, context) {
         b.kind,
         b.price,
         !!b.active,
-        ["bowl", "rice", "pastry", "salad"].includes(b.art) ? b.art : "bowl",
+        ["bowl", "rice", "pastry", "salad"].includes(b.art)
+          ? b.art
+          : b.kind === "bake"
+            ? "pastry"
+            : "bowl",
       ];
       if (b.id) {
         if (!Number.isInteger(b.id))

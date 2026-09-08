@@ -625,11 +625,9 @@ export default function LunchApp() {
                 onClick={() =>
                   setEditor({
                     title: "",
-                    description: "",
                     kind: "main",
                     price: 1000,
                     active: true,
-                    art: "bowl",
                   })
                 }
               >
@@ -855,27 +853,13 @@ export default function LunchApp() {
                   }
                 />
               </label>
-              <label>
-                Описание
-                <textarea
-                  maxLength={240}
-                  value={editor.description}
-                  onChange={(e) =>
-                    setEditor({ ...editor, description: e.target.value })
-                  }
-                />
-              </label>
               <div className="form-grid">
                 <label>
                   Категория
                   <select
                     value={editor.kind}
                     onChange={(e) =>
-                      setEditor({
-                        ...editor,
-                        kind: e.target.value,
-                        art: e.target.value === "bake" ? "pastry" : "bowl",
-                      })
+                      setEditor({ ...editor, kind: e.target.value })
                     }
                   >
                     <option value="main">Основное блюдо</option>
@@ -897,20 +881,6 @@ export default function LunchApp() {
                   />
                 </label>
               </div>
-              <label>
-                Иллюстрация
-                <select
-                  value={editor.art}
-                  onChange={(e) =>
-                    setEditor({ ...editor, art: e.target.value })
-                  }
-                >
-                  <option value="bowl">Обед с овощами</option>
-                  <option value="rice">Плов</option>
-                  <option value="salad">Салат</option>
-                  <option value="pastry">Выпечка</option>
-                </select>
-              </label>
               <label className="checkbox">
                 <input
                   type="checkbox"
