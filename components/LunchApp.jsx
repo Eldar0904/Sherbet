@@ -169,6 +169,9 @@ export default function LunchApp() {
   }
   async function submit(e) {
     e.preventDefault();
+    const payWindow =
+      !data?.demo && count ? window.open("about:blank", "_blank") : null;
+    let saved = false;
     await action(async () => {
       if (data?.demo)
         throw new Error(
@@ -183,7 +186,10 @@ export default function LunchApp() {
       setSuccess(result.id);
       setCart({});
       setRequestId(crypto.randomUUID());
+      saved = true;
+      if (payWindow) payWindow.location.href = KASPI;
     });
+    if (!saved && payWindow) payWindow.close();
   }
   function nav(next) {
     setView(next);
@@ -510,30 +516,20 @@ export default function LunchApp() {
                       <span>Итого</span>
                       <strong>{money(total)}</strong>
                     </div>
-                    <a
-                      className="kaspi"
-                      href={KASPI}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      className="kaspi checkout"
+                      disabled={busy || !count || data?.demo}
+                      type="submit"
                     >
                       <span className="kaspi-mark">K</span>
                       <span>
                         Оплатить в Kaspi
-                        <small>Переведите сумму вашего заказа</small>
+                        <small>Заказ сохранится автоматически</small>
                       </span>
-                      <ArrowUpRight size={19} />
-                    </a>
-                    <button
-                      className="button checkout"
-                      disabled={busy || !count || data?.demo}
-                      type="submit"
-                    >
                       {busy ? (
                         <LoaderCircle className="spin" size={18} />
                       ) : (
-                        <>
-                          Оформить заказ <ArrowRight size={18} />
-                        </>
+                        <ArrowUpRight size={19} />
                       )}
                     </button>
                   </form>
