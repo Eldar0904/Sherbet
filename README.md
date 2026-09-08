@@ -14,7 +14,7 @@ Create a new Vercel project connected to the Sherbet repository. The old lunch a
 2. In Vercel choose **Next.js**, repository root, and default build/output settings.
 3. Set `DATABASE_URL`, `ADMIN_PIN`, `SESSION_SECRET`, and `CRON_SECRET` in Production before deployment. Use separate Preview database credentials if enabling database-backed previews.
 4. Deploy. The first database request creates the dedicated `sherbet` schema and its tables. It never reads or alters `public` application tables. The connection role must have schema/table creation privileges (Supabase's database owner supports this). RLS is enabled; the server's database-owner connection performs queries directly. Do not expose this connection string to browsers.
-5. Sign in with the configured admin password, add dishes and prices, enable today's menu, and set deadlines. The real database starts with an empty menu; sample dishes are only shown in the explicitly marked preview when DATABASE_URL is absent.
+5. Sign in with the configured admin password, add dishes and prices, and mark today's dishes active. Saving a dish publishes today's menu. Orders close automatically at 13:00 Kazakhstan time and open again only after the next menu update. The real database starts with an empty menu; sample dishes are only shown in the explicitly marked preview when DATABASE_URL is absent.
 6. Place a test order and check it in the administrator view. Payment status is a customer's declaration, not an automatic Kaspi payment confirmation.
 
 ## Local development
@@ -27,7 +27,7 @@ npm test
 npm run build
 ```
 
-Open http://127.0.0.1:3000. Preview cannot accept orders without a database. The server prices every order from the catalog and enforces category deadlines. Admin access uses a signed, eight-hour HttpOnly cookie; changing the session secret invalidates sessions. Customers see orders associated with this browser's HttpOnly device cookie. Removing browser cookies removes access to that device's order history; admins still retain the records.
+Open http://127.0.0.1:3000. Preview cannot accept orders without a database. The server prices every order from the catalog and enforces the daily 13:00 close plus the menu-update opening rule. Admin access uses a signed, eight-hour HttpOnly cookie; changing the session secret invalidates sessions. Customers see orders associated with this browser's HttpOnly device cookie. Removing browser cookies removes access to that device's order history; admins still retain the records.
 
 ## Daily rollover
 
@@ -39,4 +39,4 @@ Cream, burnt orange and deep green; responsive menu cards; original CSS food ill
 
 ## Checks
 
-`npm test` covers timezone rollover, category cutoffs, override behavior and malformed orders. `npm run build` validates the Next.js app. A new hosted database and real payment recipient must be verified during deployment.
+`npm test` covers timezone rollover, the 13:00 close, the menu-update opening rule, override behavior and malformed orders. `npm run build` validates the Next.js app. A new hosted database and real payment recipient must be verified during deployment.
