@@ -885,28 +885,6 @@ textarea {
   grid-column: 1/-1;
   text-align: right;
 }
-.bottom-banner {
-  margin: 60px 0 45px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 30px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.bottom-banner h2 {
-  font: normal 30px var(--serif);
-  margin: 9px 0 0;
-}
-.banner-icon {
-  background: #e8ecdf;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: #637151;
-}
 footer {
   max-width: 1240px;
   margin: 0 auto;
@@ -1644,19 +1622,6 @@ footer > small {
   }
   .checkout {
     font-size: 12px;
-  }
-  .bottom-banner {
-    margin: 35px 0 28px;
-    padding: 22px 0;
-    gap: 15px;
-  }
-  .bottom-banner h2 {
-    font-size: 25px;
-  }
-  .banner-icon {
-    width: 47px;
-    height: 47px;
-    flex-shrink: 0;
   }
   footer {
     flex-wrap: wrap;

@@ -305,7 +305,7 @@ export default function LunchApp() {
                 <div className="floating-label">
                   <span>Ваш любимый перерыв</span>
                   <strong>
-                    с 1 000 ₸ <ArrowUpRight size={20} />
+                    от 1 000 ₸ <ArrowUpRight size={20} />
                   </strong>
                 </div>
                 <span className="hero-star">✳</span>
@@ -571,17 +571,6 @@ export default function LunchApp() {
                 )}
               </aside>
             </div>
-            <section className="bottom-banner">
-              <div>
-                <span className="eyebrow">
-                  МАЛЕНЬКАЯ ПАУЗА — БОЛЬШАЯ ПОЛЬЗА
-                </span>
-                <h2>Всё лучше за одним столом.</h2>
-              </div>
-              <span className="banner-icon">
-                <UtensilsCrossed />
-              </span>
-            </section>
           </>
         )}
         {view === "orders" && (
