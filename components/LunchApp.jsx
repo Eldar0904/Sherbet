@@ -295,8 +295,6 @@ export default function LunchApp() {
                   <span>
                     <Leaf size={15} /> Готовим на сегодня
                   </span>
-                  <i />
-                  Без лишних хлопот
                 </div>
               </div>
               <div className="hero-visual">
