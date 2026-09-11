@@ -1127,10 +1127,6 @@ footer > small {
 .menu-collapse-button svg {
   stroke-width: 2.5;
 }
-.button.compact {
-  min-height: 40px;
-  padding: 11px 14px;
-}
 .admin-dishes {
   border-top: 1px solid var(--line);
   padding: 16px;
@@ -1242,6 +1238,22 @@ footer > small {
   padding: 18px 20px;
   color: var(--muted);
   font-size: 11px;
+}
+.admin-add-dish {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-top: 1px solid #efeee4;
+  color: var(--orange);
+  background: #fff9f2;
+  font-size: 11px;
+  font-weight: 800;
+}
+.admin-add-dish:hover {
+  background: #fff2e6;
 }
 .kitchen {
   background: #edf0e4;

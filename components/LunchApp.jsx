@@ -675,70 +675,66 @@ export default function LunchApp() {
                       }}
                     />
                   </button>
-                  <button
-                    className="button compact"
-                    onClick={() =>
-                      setEditor({
-                        title: "",
-                        kind: "main",
-                        price: 1000,
-                        active: true,
-                      })
-                    }
-                  >
-                    <Plus size={16} /> Добавить
-                  </button>
                 </div>
               </div>
               {menuOpen && (
                 <div className="admin-dishes">
-                  {all.length ? (
-                    adminGroups.map((group) => (
-                      <section className="admin-dish-group" key={group.kind}>
-                        <h3>
-                          {group.title}
-                          <span>{group.dishes.length}</span>
-                        </h3>
-                        {group.dishes.length ? (
-                          group.dishes.map((d) => (
+                  {adminGroups.map((group) => (
+                    <section className="admin-dish-group" key={group.kind}>
+                      <h3>
+                        {group.title}
+                        <span>{group.dishes.length}</span>
+                      </h3>
+                      {group.dishes.length ? (
+                        group.dishes.map((d) => (
+                          <button
+                            className="admin-dish"
+                            key={d.id}
+                            type="button"
+                            onClick={() => setEditor(d)}
+                          >
+                            <FoodArt type={d.art} small />
+                            <div>
+                              <strong>{d.title}</strong>
+                              <small>{money(d.price)}</small>
+                            </div>
                             <button
-                              className="admin-dish"
-                              key={d.id}
+                              className={
+                                "today-toggle " + (d.active ? "on" : "")
+                              }
                               type="button"
-                              onClick={() => setEditor(d)}
+                              disabled={!!savingDishes[d.id]}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleDish(d, !d.active);
+                              }}
+                              aria-pressed={d.active}
                             >
-                              <FoodArt type={d.art} small />
-                              <div>
-                                <strong>{d.title}</strong>
-                                <small>{money(d.price)}</small>
-                              </div>
-                              <button
-                                className={
-                                  "today-toggle " + (d.active ? "on" : "")
-                                }
-                                type="button"
-                                disabled={!!savingDishes[d.id]}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  toggleDish(d, !d.active);
-                                }}
-                                aria-pressed={d.active}
-                              >
-                                <span />
-                                Сегодня
-                              </button>
+                              <span />
+                              Сегодня
                             </button>
-                          ))
-                        ) : (
-                          <div className="admin-empty">Пока нет блюд.</div>
-                        )}
-                      </section>
-                    ))
-                  ) : (
-                    <div className="empty">
-                      Добавьте первое блюдо — и откройте меню команде.
-                    </div>
-                  )}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="admin-empty">Пока нет блюд.</div>
+                      )}
+                      <button
+                        className="admin-add-dish"
+                        type="button"
+                        onClick={() =>
+                          setEditor({
+                            title: "",
+                            kind: group.kind,
+                            price: 1000,
+                            active: true,
+                          })
+                        }
+                      >
+                        <Plus size={16} />
+                        Добавить
+                      </button>
+                    </section>
+                  ))}
                 </div>
               )}
             </section>
