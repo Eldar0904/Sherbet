@@ -664,7 +664,7 @@ export default function LunchApp() {
                 </div>
                 <div>
                   <button
-                    className="text-button"
+                    className="menu-collapse-button"
                     onClick={() => setMenuOpen((open) => !open)}
                   >
                     {menuOpen ? "Скрыть блюда" : "Показать блюда"}

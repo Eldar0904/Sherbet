@@ -1104,6 +1104,23 @@ footer > small {
   align-items: center;
   gap: 14px;
 }
+.menu-collapse-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 1px solid #e4d4c5;
+  border-radius: 4px;
+  background: #fff6ee;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+}
+.menu-collapse-button svg {
+  stroke-width: 2.5;
+}
 .button.compact {
   min-height: 40px;
   padding: 11px 14px;
@@ -1798,7 +1815,7 @@ footer > small {
     justify-content: space-between;
   }
   .admin-menu-summary .button,
-  .admin-menu-summary .text-button {
+  .admin-menu-summary .menu-collapse-button {
     min-height: 44px;
   }
   .admin-dish {
