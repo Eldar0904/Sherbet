@@ -114,6 +114,8 @@ async function handle(req, context) {
       );
       return json({ ok: true, archived: r.rowCount });
     }
+    if (route.startsWith("orders/") && method === "DELETE" && !isAdmin)
+      return json({ error: "Войдите как администратор." }, 401);
     if (["dishes", "settings", "archive"].includes(route) && !isAdmin)
       return json({ error: "Войдите как администратор." }, 401);
     await ready();
@@ -272,6 +274,15 @@ async function handle(req, context) {
       } finally {
         c.release();
       }
+    }
+    if (route.startsWith("orders/") && method === "DELETE") {
+      const id = Number(route.split("/")[1]);
+      if (!Number.isInteger(id) || id < 1)
+        return json({ error: "Некорректный заказ." }, 400);
+      const r = await pool().query("DELETE FROM sherbet.orders WHERE id=$1", [
+        id,
+      ]);
+      return json({ ok: true, deleted: r.rowCount });
     }
     if (route === "archive" && method === "GET") {
       const { rows } = await pool().query(

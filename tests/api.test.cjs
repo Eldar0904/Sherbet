@@ -1,5 +1,6 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
+const { clock } = require("../lib/rules.cjs");
 process.env.DATABASE_URL = "postgresql://unused:unused@localhost/unused";
 process.env.ADMIN_PIN = "test-password";
 process.env.SESSION_SECRET = "test-session-key";
@@ -61,6 +62,7 @@ test("admin and cron deny unauthenticated access", async () => {
   assert.equal((await request("dishes", "POST", {})).status, 401);
   assert.equal((await request("cron/archive")).status, 401);
   assert.equal((await request("settings", "PUT", {})).status, 401);
+  assert.equal((await request("orders/5", "DELETE")).status, 401);
 });
 test("admin session uses HttpOnly cookie and rejects wrong password", async () => {
   assert.equal(
@@ -118,8 +120,19 @@ test("saving a dish publishes today's menu until the 1 pm close", async () => {
   const publish = calls.find((c) =>
     c.sql.includes("UPDATE sherbet.settings SET menu_updated_day"),
   );
-  assert.equal(publish.values[0], "2026-09-08");
+  assert.equal(publish.values[0], clock().day);
   assert.match(publish.sql, /main_close=780,bake_close=780/);
+});
+test("admin can delete an order", async () => {
+  const [, , auth] = await loaded;
+  calls = [];
+  const r = await request("orders/5", "DELETE", null, {
+    cookie: "sherbet_admin=" + auth.token(),
+  });
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), { ok: true, deleted: 2 });
+  assert.equal(calls.at(-1).sql, "DELETE FROM sherbet.orders WHERE id=$1");
+  assert.deepEqual(calls.at(-1).values, [5]);
 });
 test("cross-origin writes are rejected before processing", async () => {
   assert.equal(

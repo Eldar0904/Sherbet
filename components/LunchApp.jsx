@@ -21,7 +21,7 @@ import {
   History,
   Wallet,
   Users,
-  Search,
+  Trash2,
 } from "lucide-react";
 const money = (n) => new Intl.NumberFormat("ru-RU").format(n) + " ₸";
 const time = (n) =>
@@ -117,6 +117,12 @@ export default function LunchApp() {
     } catch (e) {
       setError(e.message);
     }
+  }
+  async function deleteOrder(id) {
+    await action(async () => {
+      await api("orders/" + id, "DELETE");
+      setOrders((list) => list.filter((order) => order.id !== id));
+    });
   }
   const config = data?.settings || {
     mainClose: 780,
@@ -679,7 +685,7 @@ export default function LunchApp() {
               </button>
             </div>
             <KitchenSummary orders={orders} />
-            <OrderList orders={orders} />
+            <OrderList orders={orders} admin onDelete={deleteOrder} />
           </section>
         )}
         {view === "history" && isAdmin && (
@@ -725,7 +731,7 @@ export default function LunchApp() {
                 {selectedDay ? (
                   <>
                     <KitchenSummary orders={orders} />
-                    <OrderList orders={orders} />
+                    <OrderList orders={orders} admin onDelete={deleteOrder} />
                   </>
                 ) : (
                   <div className="empty">
@@ -903,7 +909,7 @@ export default function LunchApp() {
 function ArrowDown() {
   return <ArrowRight size={18} style={{ transform: "rotate(90deg)" }} />;
 }
-function OrderList({ orders }) {
+function OrderList({ orders, admin = false, onDelete }) {
   return (
     <div className="order-list">
       {orders.length ? (
@@ -922,6 +928,16 @@ function OrderList({ orders }) {
                 minute: "2-digit",
               })}
             </small>
+            {admin && (
+              <button
+                className="delete-order"
+                type="button"
+                onClick={() => onDelete?.(o.id)}
+                aria-label={"Удалить заказ №" + o.id}
+              >
+                <Trash2 size={15} /> Удалить
+              </button>
+            )}
           </article>
         ))
       ) : (
