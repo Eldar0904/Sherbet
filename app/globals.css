@@ -570,8 +570,14 @@ p {
   display: flex;
   gap: 8px;
   margin: 24px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 .tabs button {
+  flex: 0 0 auto;
   padding: 10px 13px;
   border: 1px solid var(--line);
   border-radius: 4px;
@@ -1670,6 +1676,7 @@ footer > small {
   .tabs {
     gap: 6px;
     margin: 20px 0;
+    padding-bottom: 2px;
   }
   .tabs button {
     font-size: 9px;
@@ -1911,9 +1918,10 @@ footer > small {
     top: 10px;
   }
   .tabs button {
+    min-width: max-content;
     min-height: 44px;
     font-size: 11px;
-    padding: 9px 10px;
+    padding: 9px 12px;
   }
   .dish-card {
     grid-template-columns: 100px minmax(0, 1fr);
