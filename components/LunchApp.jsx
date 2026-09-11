@@ -78,6 +78,7 @@ export default function LunchApp() {
     [name, setName] = useState(""),
     [success, setSuccess] = useState(null),
     [editor, setEditor] = useState(null),
+    [savingDishes, setSavingDishes] = useState({}),
     [days, setDays] = useState([]),
     [selectedDay, setSelectedDay] = useState(""),
     [now, setNow] = useState(new Date()),
@@ -125,6 +126,29 @@ export default function LunchApp() {
       setOrders((list) => list.filter((order) => order.id !== id));
     });
   }
+  async function toggleDish(dish, active) {
+    const previous = data;
+    setSavingDishes((s) => ({ ...s, [dish.id]: true }));
+    setData((current) =>
+      current
+        ? {
+            ...current,
+            dishes: current.dishes.map((d) =>
+              d.id === dish.id ? { ...d, active } : d,
+            ),
+          }
+        : current,
+    );
+    try {
+      await api("dishes", "POST", { ...dish, active });
+      await refresh(false);
+    } catch (e) {
+      setData(previous);
+      setError(e.message);
+    } finally {
+      setSavingDishes((s) => ({ ...s, [dish.id]: false }));
+    }
+  }
   const config = data?.settings || {
     mainClose: 780,
     bakeClose: 780,
@@ -155,6 +179,14 @@ export default function LunchApp() {
       .map((d) => ({ ...d, qty: cart[d.id] })),
     total = items.reduce((s, i) => s + i.price * i.qty, 0),
     count = items.reduce((s, i) => s + i.qty, 0);
+  const adminGroups = [
+    ["main", "Основные блюда"],
+    ["bake", "Выпечка"],
+  ].map(([kind, title]) => ({
+    kind,
+    title,
+    dishes: all.filter((d) => d.kind === kind),
+  }));
   const update = (id, delta) => {
     setCart((c) => ({
       ...c,
@@ -638,40 +670,42 @@ export default function LunchApp() {
             </div>
             <div className="admin-dishes">
               {all.length ? (
-                all.map((d) => (
-                  <div className="admin-dish" key={d.id}>
-                    <FoodArt type={d.art} small />
-                    <div>
-                      <strong>{d.title}</strong>
-                      <small>
-                        {money(d.price)} ·{" "}
-                        {d.kind === "main" ? "Основное" : "Выпечка"}
-                      </small>
-                    </div>
-                    <label className="checkbox">
-                      <input
-                        type="checkbox"
-                        checked={d.active}
-                        disabled={busy}
-                        onChange={(e) =>
-                          action(async () => {
-                            await api("dishes", "POST", {
-                              ...d,
-                              active: e.target.checked,
-                            });
-                            await refresh();
-                          })
-                        }
-                      />
-                      Сегодня
-                    </label>
-                    <button
-                      className="text-button"
-                      onClick={() => setEditor(d)}
-                    >
-                      Изменить
-                    </button>
-                  </div>
+                adminGroups.map((group) => (
+                  <section className="admin-dish-group" key={group.kind}>
+                    <h3>
+                      {group.title}
+                      <span>{group.dishes.length}</span>
+                    </h3>
+                    {group.dishes.length ? (
+                      group.dishes.map((d) => (
+                        <div className="admin-dish" key={d.id}>
+                          <FoodArt type={d.art} small />
+                          <div>
+                            <strong>{d.title}</strong>
+                            <small>{money(d.price)}</small>
+                          </div>
+                          <button
+                            className={"today-toggle " + (d.active ? "on" : "")}
+                            type="button"
+                            disabled={!!savingDishes[d.id]}
+                            onClick={() => toggleDish(d, !d.active)}
+                            aria-pressed={d.active}
+                          >
+                            <span />
+                            Сегодня
+                          </button>
+                          <button
+                            className="text-button"
+                            onClick={() => setEditor(d)}
+                          >
+                            Изменить
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="admin-empty">Пока нет блюд.</div>
+                    )}
+                  </section>
                 ))
               ) : (
                 <div className="empty">

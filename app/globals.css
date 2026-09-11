@@ -1073,12 +1073,47 @@ footer > small {
 .admin-dishes {
   margin: 0 0 35px;
 }
+.admin-dish-group {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf9;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.admin-dish-group h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font: 22px var(--serif);
+  margin: 0;
+  padding: 18px 20px;
+  background: #f0f1e7;
+  border-bottom: 1px solid var(--line);
+}
+.admin-dish-group h3 span {
+  font:
+    700 10px Manrope,
+    Arial,
+    sans-serif;
+  background: #fffdf9;
+  border: 1px solid #dfe3d5;
+  border-radius: 999px;
+  min-width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
 .admin-dish {
   display: flex;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid var(--line);
-  padding: 12px 0;
+  border-bottom: 1px solid #efeee4;
+  padding: 13px 20px;
+}
+.admin-dish:last-child {
+  border-bottom: 0;
 }
 .admin-dish > .food-art {
   width: 75px;
@@ -1104,8 +1139,42 @@ footer > small {
   color: var(--muted);
   margin-top: 6px;
 }
-.admin-dish .checkbox {
+.today-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dfe3d5;
+  border-radius: 999px;
+  background: #f6f6ee;
+  padding: 5px 11px 5px 5px;
+  min-width: 98px;
+  color: #7d8376;
   font-size: 10px;
+  font-weight: 800;
+}
+.today-toggle span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #c4c9b8;
+  box-shadow: inset 0 0 0 1px #adb5a0;
+  transition:
+    transform 0.18s,
+    background 0.18s;
+}
+.today-toggle.on {
+  background: #edf2e5;
+  border-color: #cbd8c1;
+  color: var(--green);
+}
+.today-toggle.on span {
+  background: #609c5e;
+  transform: translateX(4px);
+}
+.admin-empty {
+  padding: 18px 20px;
+  color: var(--muted);
+  font-size: 11px;
 }
 .kitchen {
   background: #edf0e4;
@@ -1676,6 +1745,7 @@ footer > small {
   .admin-dish {
     gap: 10px;
     flex-wrap: wrap;
+    padding: 13px;
   }
   .admin-dish > .food-art {
     width: 50px;
@@ -1684,8 +1754,9 @@ footer > small {
   .admin-dish strong {
     font-size: 11px;
   }
-  .admin-dish .checkbox {
-    font-size: 9px;
+  .today-toggle {
+    min-height: 42px;
+    margin-left: auto;
   }
   .history-layout {
     grid-template-columns: 1fr;
@@ -1895,7 +1966,7 @@ footer > small {
   .admin-dish .text-button {
     min-height: 44px;
   }
-  .admin-dish > .checkbox {
-    margin: 0;
+  .admin-dish > .text-button {
+    margin-left: auto;
   }
 }
