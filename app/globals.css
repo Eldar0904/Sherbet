@@ -1147,12 +1147,17 @@ footer > small {
 .admin-dish {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 20px;
   border-bottom: 1px solid #efeee4;
   padding: 13px 20px;
+  text-align: left;
 }
 .admin-dish:last-child {
   border-bottom: 0;
+}
+.admin-dish:hover {
+  background: #faf9f2;
 }
 .admin-dish > .food-art {
   width: 75px;
@@ -2013,11 +2018,7 @@ footer > small {
   .modal label {
     font-size: 13px;
   }
-  .modal .text-button,
-  .admin-dish .text-button {
+  .modal .text-button {
     min-height: 44px;
-  }
-  .admin-dish > .text-button {
-    margin-left: auto;
   }
 }

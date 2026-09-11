@@ -701,7 +701,12 @@ export default function LunchApp() {
                         </h3>
                         {group.dishes.length ? (
                           group.dishes.map((d) => (
-                            <div className="admin-dish" key={d.id}>
+                            <button
+                              className="admin-dish"
+                              key={d.id}
+                              type="button"
+                              onClick={() => setEditor(d)}
+                            >
                               <FoodArt type={d.art} small />
                               <div>
                                 <strong>{d.title}</strong>
@@ -713,19 +718,16 @@ export default function LunchApp() {
                                 }
                                 type="button"
                                 disabled={!!savingDishes[d.id]}
-                                onClick={() => toggleDish(d, !d.active)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleDish(d, !d.active);
+                                }}
                                 aria-pressed={d.active}
                               >
                                 <span />
                                 Сегодня
                               </button>
-                              <button
-                                className="text-button"
-                                onClick={() => setEditor(d)}
-                              >
-                                Изменить
-                              </button>
-                            </div>
+                            </button>
                           ))
                         ) : (
                           <div className="admin-empty">Пока нет блюд.</div>
