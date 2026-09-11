@@ -79,6 +79,7 @@ export default function LunchApp() {
     [success, setSuccess] = useState(null),
     [editor, setEditor] = useState(null),
     [menuOpen, setMenuOpen] = useState(false),
+    [adminKind, setAdminKind] = useState("main"),
     [savingDishes, setSavingDishes] = useState({}),
     [days, setDays] = useState([]),
     [selectedDay, setSelectedDay] = useState(""),
@@ -188,6 +189,7 @@ export default function LunchApp() {
     title,
     dishes: all.filter((d) => d.kind === kind),
   }));
+  const adminGroup = adminGroups.find((group) => group.kind === adminKind);
   const activeCount = all.filter((d) => d.active).length;
   const update = (id, delta) => {
     setCart((c) => ({
@@ -679,62 +681,80 @@ export default function LunchApp() {
               </div>
               {menuOpen && (
                 <div className="admin-dishes">
-                  {adminGroups.map((group) => (
-                    <section className="admin-dish-group" key={group.kind}>
-                      <h3>
+                  <div className="admin-kind-tabs" role="tablist">
+                    {adminGroups.map((group) => (
+                      <button
+                        key={group.kind}
+                        className={adminKind === group.kind ? "selected" : ""}
+                        type="button"
+                        onClick={() => setAdminKind(group.kind)}
+                        role="tab"
+                        aria-selected={adminKind === group.kind}
+                      >
                         {group.title}
                         <span>{group.dishes.length}</span>
-                      </h3>
-                      {group.dishes.length ? (
-                        group.dishes.map((d) => (
-                          <button
-                            className="admin-dish"
-                            key={d.id}
-                            type="button"
-                            onClick={() => setEditor(d)}
-                          >
-                            <FoodArt type={d.art} small />
-                            <div>
-                              <strong>{d.title}</strong>
-                              <small>{money(d.price)}</small>
-                            </div>
-                            <button
-                              className={
-                                "today-toggle " + (d.active ? "on" : "")
-                              }
-                              type="button"
-                              disabled={!!savingDishes[d.id]}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleDish(d, !d.active);
-                              }}
-                              aria-pressed={d.active}
-                            >
-                              <span />
-                              Сегодня
-                            </button>
-                          </button>
-                        ))
-                      ) : (
-                        <div className="admin-empty">Пока нет блюд.</div>
-                      )}
-                      <button
-                        className="admin-add-dish"
-                        type="button"
-                        onClick={() =>
-                          setEditor({
-                            title: "",
-                            kind: group.kind,
-                            price: 1000,
-                            active: true,
-                          })
-                        }
-                      >
-                        <Plus size={16} />
-                        Добавить
                       </button>
-                    </section>
-                  ))}
+                    ))}
+                  </div>
+                  <section className="admin-dish-group">
+                    <h3>
+                      {adminGroup.title}
+                      <span>{adminGroup.dishes.length}</span>
+                    </h3>
+                    {adminGroup.dishes.length ? (
+                      adminGroup.dishes.map((d) => (
+                        <div
+                          className="admin-dish"
+                          key={d.id}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => setEditor(d)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setEditor(d);
+                            }
+                          }}
+                        >
+                          <FoodArt type={d.art} small />
+                          <div>
+                            <strong>{d.title}</strong>
+                            <small>{money(d.price)}</small>
+                          </div>
+                          <button
+                            className={"today-toggle " + (d.active ? "on" : "")}
+                            type="button"
+                            disabled={!!savingDishes[d.id]}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleDish(d, !d.active);
+                            }}
+                            aria-pressed={d.active}
+                          >
+                            <span />
+                            Сегодня
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="admin-empty">Пока нет блюд.</div>
+                    )}
+                    <button
+                      className="admin-add-dish"
+                      type="button"
+                      onClick={() =>
+                        setEditor({
+                          title: "",
+                          kind: adminGroup.kind,
+                          price: 1000,
+                          active: true,
+                        })
+                      }
+                    >
+                      <Plus size={16} />
+                      Добавить
+                    </button>
+                  </section>
                 </div>
               )}
             </section>
