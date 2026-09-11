@@ -1077,8 +1077,40 @@ footer > small {
   width: 130px;
   margin: 0;
 }
+.admin-menu-panel {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fffdf9;
+  margin: 0 0 30px;
+}
+.admin-menu-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+}
+.admin-menu-summary h2 {
+  font: normal 28px var(--serif);
+  margin: 0 0 6px;
+}
+.admin-menu-summary p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0;
+}
+.admin-menu-summary > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.button.compact {
+  min-height: 40px;
+  padding: 11px 14px;
+}
 .admin-dishes {
-  margin: 0 0 35px;
+  border-top: 1px solid var(--line);
+  padding: 16px;
 }
 .admin-dish-group {
   border: 1px solid var(--line);
@@ -1748,6 +1780,21 @@ footer > small {
   }
   .admin-settings > label {
     width: calc(50% - 8px);
+  }
+  .admin-menu-summary {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 16px;
+  }
+  .admin-menu-summary h2 {
+    font-size: 24px;
+  }
+  .admin-menu-summary > div:last-child {
+    justify-content: space-between;
+  }
+  .admin-menu-summary .button,
+  .admin-menu-summary .text-button {
+    min-height: 44px;
   }
   .admin-dish {
     gap: 10px;

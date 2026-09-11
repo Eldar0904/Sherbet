@@ -78,6 +78,7 @@ export default function LunchApp() {
     [name, setName] = useState(""),
     [success, setSuccess] = useState(null),
     [editor, setEditor] = useState(null),
+    [menuOpen, setMenuOpen] = useState(false),
     [savingDishes, setSavingDishes] = useState({}),
     [days, setDays] = useState([]),
     [selectedDay, setSelectedDay] = useState(""),
@@ -187,6 +188,7 @@ export default function LunchApp() {
     title,
     dishes: all.filter((d) => d.kind === kind),
   }));
+  const activeCount = all.filter((d) => d.active).length;
   const update = (id, delta) => {
     setCart((c) => ({
       ...c,
@@ -652,67 +654,92 @@ export default function LunchApp() {
                 {closed("main") ? "Закрыто до обновления меню" : "Открыто"}
               </span>
             </div>
-            <div className="section-heading">
-              <h2>Меню и блюда</h2>
-              <button
-                className="button"
-                onClick={() =>
-                  setEditor({
-                    title: "",
-                    kind: "main",
-                    price: 1000,
-                    active: true,
-                  })
-                }
-              >
-                <Plus size={16} /> Добавить блюдо
-              </button>
-            </div>
-            <div className="admin-dishes">
-              {all.length ? (
-                adminGroups.map((group) => (
-                  <section className="admin-dish-group" key={group.kind}>
-                    <h3>
-                      {group.title}
-                      <span>{group.dishes.length}</span>
-                    </h3>
-                    {group.dishes.length ? (
-                      group.dishes.map((d) => (
-                        <div className="admin-dish" key={d.id}>
-                          <FoodArt type={d.art} small />
-                          <div>
-                            <strong>{d.title}</strong>
-                            <small>{money(d.price)}</small>
-                          </div>
-                          <button
-                            className={"today-toggle " + (d.active ? "on" : "")}
-                            type="button"
-                            disabled={!!savingDishes[d.id]}
-                            onClick={() => toggleDish(d, !d.active)}
-                            aria-pressed={d.active}
-                          >
-                            <span />
-                            Сегодня
-                          </button>
-                          <button
-                            className="text-button"
-                            onClick={() => setEditor(d)}
-                          >
-                            Изменить
-                          </button>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="admin-empty">Пока нет блюд.</div>
-                    )}
-                  </section>
-                ))
-              ) : (
-                <div className="empty">
-                  Добавьте первое блюдо — и откройте меню команде.
+            <section className="admin-menu-panel">
+              <div className="admin-menu-summary">
+                <div>
+                  <h2>Меню и блюда</h2>
+                  <p>
+                    Сегодня выбрано {activeCount} из {all.length} блюд
+                  </p>
+                </div>
+                <div>
+                  <button
+                    className="text-button"
+                    onClick={() => setMenuOpen((open) => !open)}
+                  >
+                    {menuOpen ? "Скрыть блюда" : "Показать блюда"}
+                    <ChevronRight
+                      size={16}
+                      style={{
+                        transform: menuOpen ? "rotate(90deg)" : undefined,
+                      }}
+                    />
+                  </button>
+                  <button
+                    className="button compact"
+                    onClick={() =>
+                      setEditor({
+                        title: "",
+                        kind: "main",
+                        price: 1000,
+                        active: true,
+                      })
+                    }
+                  >
+                    <Plus size={16} /> Добавить
+                  </button>
+                </div>
+              </div>
+              {menuOpen && (
+                <div className="admin-dishes">
+                  {all.length ? (
+                    adminGroups.map((group) => (
+                      <section className="admin-dish-group" key={group.kind}>
+                        <h3>
+                          {group.title}
+                          <span>{group.dishes.length}</span>
+                        </h3>
+                        {group.dishes.length ? (
+                          group.dishes.map((d) => (
+                            <div className="admin-dish" key={d.id}>
+                              <FoodArt type={d.art} small />
+                              <div>
+                                <strong>{d.title}</strong>
+                                <small>{money(d.price)}</small>
+                              </div>
+                              <button
+                                className={
+                                  "today-toggle " + (d.active ? "on" : "")
+                                }
+                                type="button"
+                                disabled={!!savingDishes[d.id]}
+                                onClick={() => toggleDish(d, !d.active)}
+                                aria-pressed={d.active}
+                              >
+                                <span />
+                                Сегодня
+                              </button>
+                              <button
+                                className="text-button"
+                                onClick={() => setEditor(d)}
+                              >
+                                Изменить
+                              </button>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="admin-empty">Пока нет блюд.</div>
+                        )}
+                      </section>
+                    ))
+                  ) : (
+                    <div className="empty">
+                      Добавьте первое блюдо — и откройте меню команде.
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </section>
             <div className="section-heading">
               <h2>Заказы на сегодня</h2>
               <button className="text-button" onClick={() => nav("history")}>
