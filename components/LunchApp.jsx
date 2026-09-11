@@ -22,6 +22,7 @@ import {
   Wallet,
   Users,
   Trash2,
+  ShieldAlert,
 } from "lucide-react";
 const money = (n) => new Intl.NumberFormat("ru-RU").format(n) + " ₸";
 const time = (n) =>
@@ -910,6 +911,7 @@ function ArrowDown() {
   return <ArrowRight size={18} style={{ transform: "rotate(90deg)" }} />;
 }
 function OrderList({ orders, admin = false, onDelete }) {
+  const [confirming, setConfirming] = useState(null);
   return (
     <div className="order-list">
       {orders.length ? (
@@ -928,16 +930,34 @@ function OrderList({ orders, admin = false, onDelete }) {
                 minute: "2-digit",
               })}
             </small>
-            {admin && (
-              <button
-                className="delete-order"
-                type="button"
-                onClick={() => onDelete?.(o.id)}
-                aria-label={"Удалить заказ №" + o.id}
-              >
-                <Trash2 size={15} /> Удалить
-              </button>
-            )}
+            {admin &&
+              (confirming === o.id ? (
+                <div className="delete-confirm">
+                  <ShieldAlert size={16} />
+                  <span>Удалить заказ №{o.id}?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConfirming(null);
+                      onDelete?.(o.id);
+                    }}
+                  >
+                    Точно удалить
+                  </button>
+                  <button type="button" onClick={() => setConfirming(null)}>
+                    Отмена
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="delete-order"
+                  type="button"
+                  onClick={() => setConfirming(o.id)}
+                  aria-label={"Подтвердить удаление заказа №" + o.id}
+                >
+                  <Trash2 size={15} /> Удалить
+                </button>
+              ))}
           </article>
         ))
       ) : (
