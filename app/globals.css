@@ -990,10 +990,17 @@ footer > small {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
-  color: #a44d36;
-  font-size: 10px;
+  margin-left: 0;
+  color: #9c7a69;
+  border: 1px solid #eadbd1;
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 9px;
   font-weight: 700;
+}
+.delete-order:hover {
+  color: #a44d36;
+  background: #fff6ee;
 }
 .delete-confirm {
   display: flex;
@@ -1774,11 +1781,8 @@ footer > small {
     font-size: 11px;
   }
   .delete-order {
-    width: 100%;
-    justify-content: center;
-    border: 1px solid #ecd3c0;
-    border-radius: 4px;
-    padding: 10px;
+    margin-left: auto;
+    min-height: 34px;
   }
   .delete-confirm {
     align-items: stretch;

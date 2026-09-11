@@ -954,6 +954,16 @@ function OrderList({ orders, admin = false, onDelete }) {
             <div className="order-row-top">
               <strong>{o.customer}</strong>
               <b>{money(o.total)}</b>
+              {admin && confirming !== o.id && (
+                <button
+                  className="delete-order"
+                  type="button"
+                  onClick={() => setConfirming(o.id)}
+                  aria-label={"Подтвердить удаление заказа №" + o.id}
+                >
+                  <Trash2 size={14} /> Удалить
+                </button>
+              )}
             </div>
             <p>{o.items.map((i) => `${i.title} × ${i.qty}`).join(" · ")}</p>
             <small>
@@ -964,34 +974,24 @@ function OrderList({ orders, admin = false, onDelete }) {
                 minute: "2-digit",
               })}
             </small>
-            {admin &&
-              (confirming === o.id ? (
-                <div className="delete-confirm">
-                  <ShieldAlert size={16} />
-                  <span>Удалить заказ №{o.id}?</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setConfirming(null);
-                      onDelete?.(o.id);
-                    }}
-                  >
-                    Точно удалить
-                  </button>
-                  <button type="button" onClick={() => setConfirming(null)}>
-                    Отмена
-                  </button>
-                </div>
-              ) : (
+            {admin && confirming === o.id && (
+              <div className="delete-confirm">
+                <ShieldAlert size={16} />
+                <span>Удалить заказ №{o.id}?</span>
                 <button
-                  className="delete-order"
                   type="button"
-                  onClick={() => setConfirming(o.id)}
-                  aria-label={"Подтвердить удаление заказа №" + o.id}
+                  onClick={() => {
+                    setConfirming(null);
+                    onDelete?.(o.id);
+                  }}
                 >
-                  <Trash2 size={15} /> Удалить
+                  Точно удалить
                 </button>
-              ))}
+                <button type="button" onClick={() => setConfirming(null)}>
+                  Отмена
+                </button>
+              </div>
+            )}
           </article>
         ))
       ) : (
