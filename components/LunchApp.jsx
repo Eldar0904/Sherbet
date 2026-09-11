@@ -151,8 +151,8 @@ export default function LunchApp() {
     }
   }
   const config = data?.settings || {
-    mainClose: 780,
-    bakeClose: 780,
+    mainClose: 720,
+    bakeClose: 720,
     forceOpen: false,
     menuUpdatedDay: "",
   };

@@ -91,8 +91,8 @@ async function handle(req, context) {
         dishes: demo,
         settings: {
           forceOpen: true,
-          mainClose: 780,
-          bakeClose: 780,
+          mainClose: 720,
+          bakeClose: 720,
           menuUpdatedDay: rules.clock().day,
         },
         demo: true,
@@ -171,7 +171,7 @@ async function handle(req, context) {
           values,
         );
       await pool().query(
-        "UPDATE sherbet.settings SET menu_updated_day=$1,main_close=780,bake_close=780 WHERE id=1",
+        "UPDATE sherbet.settings SET menu_updated_day=$1,main_close=720,bake_close=720 WHERE id=1",
         [rules.clock().day],
       );
       return json({ ok: true });

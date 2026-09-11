@@ -7,8 +7,8 @@ test("business day rolls over at Kazakhstan midnight", () => {
 });
 test("independent category deadlines and admin override", () => {
   const s = {
-    mainClose: 780,
-    bakeClose: 780,
+    mainClose: 720,
+    bakeClose: 720,
     forceOpen: false,
     menuUpdatedDay: "2026-09-08",
   };
@@ -20,8 +20,8 @@ test("independent category deadlines and admin override", () => {
 });
 test("stale menus stay closed until the menu is updated today", () => {
   const s = {
-    mainClose: 780,
-    bakeClose: 780,
+    mainClose: 720,
+    bakeClose: 720,
     forceOpen: false,
     menuUpdatedDay: "2026-09-07",
   };

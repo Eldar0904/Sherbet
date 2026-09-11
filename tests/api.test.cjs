@@ -101,7 +101,7 @@ test("closed, inactive and missing dishes never create orders", async () => {
     );
   }
 });
-test("saving a dish publishes today's menu until the 1 pm close", async () => {
+test("saving a dish publishes today's menu until the noon close", async () => {
   const [, , auth] = await loaded;
   calls = [];
   const r = await request(
@@ -121,7 +121,7 @@ test("saving a dish publishes today's menu until the 1 pm close", async () => {
     c.sql.includes("UPDATE sherbet.settings SET menu_updated_day"),
   );
   assert.equal(publish.values[0], clock().day);
-  assert.match(publish.sql, /main_close=780,bake_close=780/);
+  assert.match(publish.sql, /main_close=720,bake_close=720/);
 });
 test("admin can delete an order", async () => {
   const [, , auth] = await loaded;
